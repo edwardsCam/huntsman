@@ -20,7 +20,7 @@ function createOutline(rect) {
   outline.setAttribute('huntsman-target', '')
   outline.style.position = 'absolute'
   outline.style.border = '2px solid red'
-  outline.style.zIndex = 9999
+  outline.style.background = 'none'
   outline.style.top = `${rect.top}px`
   outline.style.left = `${rect.left}px`
   outline.style.width = `${rect.width}px`
