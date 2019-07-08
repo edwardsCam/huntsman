@@ -1,0 +1,48 @@
+body {
+  padding: 10px;
+  width: 300px;
+  text-align: center;
+}
+
+h1 {
+  margin: 0 0 10px 0;
+}
+
+* {
+  font-family: 'Trebuchet MS';
+}
+
+#searchInput {
+  border: 1px solid black;
+  font-family: monospace;
+  padding: 6px;
+  transition: border-color 200ms ease-out;
+  width: 160px;
+}
+
+#searchInput:focus {
+  border-color: rgb(0, 139, 225);
+  outline: none;
+}
+
+#searchBtn {
+  border-color: rgb(0, 139, 225);
+  border-radius: 24px;
+  color: rgb(0, 139, 225);
+  letter-spacing: 0.5px;
+  padding: 8px 12px;
+  text-transform: uppercase;
+  transition: background 200ms ease-out, color 200ms ease-out;
+}
+
+#searchBtn:hover,
+#searchBtn:focus {
+  background: rgb(0, 139, 225);
+  color: white;
+  cursor: pointer;
+  outline: none;
+}
+
+.hunterFormItem {
+  margin-bottom: 10px;
+}
