@@ -29,8 +29,11 @@ function createOutline(rect) {
 }
 
 function sanitize(unsafeStr) {
+  // TODO do we need to sanitize input to querySelectorAll?
+  // something like "h1 > div" is a valid css selector, we don't want to escape &gt
   return unsafeStr
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
+  // return unsafeStr
+  //   .replace(/&/g, '&amp;')
+  //   .replace(/</g, '&lt;')
+  //   .replace(/>/g, '&gt;')
 }
