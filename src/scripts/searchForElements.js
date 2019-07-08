@@ -1,10 +1,10 @@
-chrome.storage.local.get(['hunterSearchQuery'], ({ hunterSearchQuery }) => {
+chrome.storage.local.get(['_HUNTSMAN_searchQuery'], ({ _HUNTSMAN_searchQuery }) => {
   clear()
-  document.querySelectorAll(sanitize(hunterSearchQuery)).forEach(drawOutline)
+  document.querySelectorAll(sanitize(_HUNTSMAN_searchQuery)).forEach(drawOutline)
 })
 
 function clear() {
-  document.querySelectorAll('[hunter-target]').forEach(el => el.remove())
+  document.querySelectorAll('[huntsman-target]').forEach(el => el.remove())
 }
 
 function drawOutline(element) {
@@ -17,7 +17,7 @@ function drawOutline(element) {
 
 function createOutline(rect) {
   const outline = document.createElement('div')
-  outline.setAttribute('hunter-target', '')
+  outline.setAttribute('huntsman-target', '')
   outline.style.position = 'absolute'
   outline.style.border = '2px solid red'
   outline.style.zIndex = 9999

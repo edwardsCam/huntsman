@@ -1,4 +1,4 @@
-# Hunter (finalized name tbd)
+# Huntsman (finalized name tbd)
 
 Highlights all elements in the DOM that match a given search query.
 

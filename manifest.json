@@ -1,6 +1,6 @@
 {
-  "name":"Hunter",
-  "description":"hunter",
+  "name":"Huntsman",
+  "description":"Sniff and highlight DOM elements",
   "version":"1.0",
   "manifest_version":2,
   "permissions":[
