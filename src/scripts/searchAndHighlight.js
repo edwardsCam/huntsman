@@ -1,34 +1,47 @@
-const searchAndHighlight = query => {
+const searchAndHighlight = fullQuery => {
   clear()
-  const sanitizedQuery = sanitize(query)
+  const sanitizedQuery = sanitize(fullQuery)
   if (sanitizedQuery) {
-    document.querySelectorAll(sanitizedQuery).forEach(drawOutline)
+    const terms = sanitizedQuery.split(',').map(str => str.trim())
+    terms.forEach(query => {
+      document.querySelectorAll(query).forEach(element => {
+        drawOutline(element, query, 'green')
+      })
+    })
   }
 }
 
 const clear = () => document.querySelectorAll('[huntsman-target]').forEach(el => el.remove())
 
-const drawOutline = element => {
-  document.body.appendChild(
-    createOutline(
-      element.getBoundingClientRect()
-    )
-  )
+const drawOutline = (element, query, color) => {
+  const outline = createOutline(element.getBoundingClientRect(), color)
+  outline.appendChild(createOutlineLabel(query, color))
+  document.body.appendChild(outline)
 }
 
-const createOutline = rect => {
-  const outline = document.createElement('div')
-  outline.setAttribute('huntsman-target', '')
-  outline.style.position = 'absolute'
-  outline.style.border = '2px solid red'
-  outline.style.overflow = 'hidden'
-  outline.style.background = 'none'
-  outline.style.top = `${rect.top}px`
-  outline.style.left = `${rect.left}px`
-  outline.style.width = `${rect.width}px`
-  outline.style.height = `${rect.height}px`
-  outline.style.pointerEvents = 'none'
-  return outline
+const createOutline = (rect, color) => {
+  const el = document.createElement('div')
+  el.setAttribute('huntsman-target', '')
+  el.style.position = 'absolute'
+  el.style.border = `2px solid ${color}`
+  el.style.overflow = 'hidden'
+  el.style.background = 'none'
+  el.style.top = `${rect.top}px`
+  el.style.left = `${rect.left}px`
+  el.style.width = `${rect.width}px`
+  el.style.height = `${rect.height}px`
+  el.style.pointerEvents = 'none'
+  return el
+}
+
+const createOutlineLabel = (label, color) => {
+  const el = document.createElement('div')
+  el.innerHTML = label
+  el.style.position = 'absolute'
+  el.style.left = 0
+  el.style.background = color
+  el.style.fontSize = '10px'
+  return el
 }
 
 // TODO do we need to sanitize input to querySelectorAll?
