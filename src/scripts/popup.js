@@ -1,13 +1,18 @@
-const clickHandler = e => {
-  const value = document.getElementById('searchInput').value.replace(/\"/g, '\\"')
+const triggerSearch = e => {
+  const searchQuery = document.getElementById('searchInput').value.replace(/\"/g, '\\"')
   chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-    chrome.tabs.sendMessage(tabs[0].id, value)
+    chrome.tabs.sendMessage(tabs[0].id, { searchQuery })
   })
 }
 
-document.getElementById('searchBtn').onclick = clickHandler
+document.getElementById('searchBtn').onclick = triggerSearch
+document.getElementById('clearBtn').onclick = e => {
+  chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+    chrome.tabs.sendMessage(tabs[0].id, { clear: true })
+  })
+}
 document.getElementById('searchInput').onkeyup = e => {
   if (e.key === 'Enter') {
-    clickHandler(e)
+    triggerSearch(e)
   }
 }

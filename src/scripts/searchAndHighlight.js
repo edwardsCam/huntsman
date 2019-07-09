@@ -39,5 +39,9 @@ const sanitize = unsafeStr => unsafeStr
 //   .replace(/>/g, '&gt;')
 
 chrome.runtime.onMessage.addListener((request, sender) => {
-  searchAndHighlight(request)
+  if (request.searchQuery) {
+    searchAndHighlight(request.searchQuery)
+  } else if (request.clear) {
+    clear()
+  }
 })

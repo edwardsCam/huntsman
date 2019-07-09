@@ -25,7 +25,7 @@ h1 {
   outline: none;
 }
 
-#searchBtn {
+button {
   border-color: rgb(0, 139, 225);
   border-radius: 24px;
   color: rgb(0, 139, 225);
@@ -35,8 +35,8 @@ h1 {
   transition: background 200ms ease-out, color 200ms ease-out;
 }
 
-#searchBtn:hover,
-#searchBtn:focus {
+button:hover,
+button:focus {
   background: rgb(0, 139, 225);
   color: white;
   cursor: pointer;
