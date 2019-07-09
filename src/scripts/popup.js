@@ -5,7 +5,7 @@ const inCurrentTab = callback => {
 }
 
 const triggerSearch = e => {
-  const searchQuery = document.getElementById('searchInput').value.replace(/\"/g, '\\"')
+  const searchQuery = document.getElementById('searchInput').value
   chrome.storage.local.set({ huntsmanSearchQuery: searchQuery })
 
   inCurrentTab(tabId => {
