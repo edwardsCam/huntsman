@@ -1,6 +1,9 @@
 chrome.storage.local.get(['_HUNTSMAN_searchQuery'], ({ _HUNTSMAN_searchQuery }) => {
   clear()
-  document.querySelectorAll(sanitize(_HUNTSMAN_searchQuery)).forEach(drawOutline)
+  const searchQuery = sanitize(_HUNTSMAN_searchQuery)
+  if (searchQuery) {
+    document.querySelectorAll(searchQuery).forEach(drawOutline)
+  }
 })
 
 function clear() {
