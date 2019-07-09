@@ -1,18 +1,39 @@
+const inCurrentTab = callback => {
+  chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+    if (tabs.length) callback(tabs[0].id)
+  })
+}
+
 const triggerSearch = e => {
   const searchQuery = document.getElementById('searchInput').value.replace(/\"/g, '\\"')
-  chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-    chrome.tabs.sendMessage(tabs[0].id, { searchQuery })
+  chrome.storage.local.set({ huntsmanSearchQuery: searchQuery })
+
+  inCurrentTab(tabId => {
+    chrome.tabs.sendMessage(tabId, { searchQuery })
+  })
+}
+
+const triggerClear = e => {
+  chrome.storage.local.set({ huntsmanSearchQuery: null })
+  const searchInput = document.getElementById('searchInput')
+  searchInput.value = ''
+  searchInput.focus()
+
+  inCurrentTab(tabId => {
+    chrome.tabs.sendMessage(tabId, { clear: true })
   })
 }
 
 document.getElementById('searchBtn').onclick = triggerSearch
-document.getElementById('clearBtn').onclick = e => {
-  chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-    chrome.tabs.sendMessage(tabs[0].id, { clear: true })
-  })
-}
+document.getElementById('clearBtn').onclick = triggerClear
 document.getElementById('searchInput').onkeyup = e => {
-  if (e.key === 'Enter') {
-    triggerSearch(e)
-  }
+  if (e.key === 'Enter') triggerSearch(e)
+}
+
+window.onload = () => {
+  chrome.storage.local.get([ 'huntsmanSearchQuery' ], ({ huntsmanSearchQuery }) => {
+    if (huntsmanSearchQuery) {
+      document.getElementById('searchInput').value = huntsmanSearchQuery
+    }
+  })
 }
