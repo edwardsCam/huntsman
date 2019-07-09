@@ -4,7 +4,7 @@
 
 body {
   padding: 10px;
-  width: 300px;
+  width: 500px;
   text-align: center;
 }
 
@@ -12,7 +12,7 @@ h1 {
   margin: 0 0 10px 0;
 }
 
-.formItem button {
+button {
   border-color: rgb(0, 139, 225);
   border-radius: 24px;
   color: rgb(0, 139, 225);
@@ -23,8 +23,8 @@ h1 {
   transition: background 200ms ease-out, color 200ms ease-out;
 }
 
-.formItem button:hover,
-.formItem button:focus {
+button:hover,
+button:focus {
   background: rgb(0, 139, 225);
   color: white;
   outline: none;
@@ -35,7 +35,7 @@ h1 {
   font-family: monospace;
   padding: 6px;
   transition: border-color 200ms ease-out;
-  width: 160px;
+  width: 350px;
 }
 
 #searchInput:focus {
@@ -57,12 +57,17 @@ h1 {
   border: 1px solid grey;
   border-radius: 5px;
   padding: 5px;
+  margin-top: 12px;
 }
 
 #closeInfoBtn {
   float: right;
+  padding: 5px;
 }
 
-.formItem {
-  margin-bottom: 10px;
+#btnPanel {
+  margin-top: 12px;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 24px 0 108px;
 }

@@ -31,6 +31,7 @@ const createOutline = (rect, color) => {
   el.style.width = `${rect.width}px`
   el.style.height = `${rect.height}px`
   el.style.pointerEvents = 'none'
+  el.style.zIndex = 999
   return el
 }
 
@@ -41,6 +42,8 @@ const createOutlineLabel = (label, color) => {
   el.style.left = 0
   el.style.background = color
   el.style.fontSize = '10px'
+  el.style.fontFamily = 'monospace'
+  el.style.padding = '0 2px 3px 0'
   return el
 }
 
