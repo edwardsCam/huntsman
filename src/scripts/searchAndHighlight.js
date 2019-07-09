@@ -27,6 +27,7 @@ const createOutline = rect => {
   outline.style.left = `${rect.left}px`
   outline.style.width = `${rect.width}px`
   outline.style.height = `${rect.height}px`
+  outline.style.pointerEvents = 'none'
   return outline
 }
 

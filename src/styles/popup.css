@@ -1,3 +1,7 @@
+* {
+  font-family: 'Trebuchet MS';
+}
+
 body {
   padding: 10px;
   width: 300px;
@@ -8,8 +12,22 @@ h1 {
   margin: 0 0 10px 0;
 }
 
-* {
-  font-family: 'Trebuchet MS';
+.formItem button {
+  border-color: rgb(0, 139, 225);
+  border-radius: 24px;
+  color: rgb(0, 139, 225);
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  padding: 8px 12px;
+  text-transform: uppercase;
+  transition: background 200ms ease-out, color 200ms ease-out;
+}
+
+.formItem button:hover,
+.formItem button:focus {
+  background: rgb(0, 139, 225);
+  color: white;
+  outline: none;
 }
 
 #searchInput {
@@ -25,22 +43,24 @@ h1 {
   outline: none;
 }
 
-button {
-  border-color: rgb(0, 139, 225);
-  border-radius: 24px;
-  color: rgb(0, 139, 225);
-  letter-spacing: 0.5px;
-  padding: 8px 12px;
-  text-transform: uppercase;
-  transition: background 200ms ease-out, color 200ms ease-out;
+#infoBtn {
+  border: none;
+  padding: 5px 5px 4px 5px;
+  vertical-align: middle;
 }
 
-button:hover,
-button:focus {
-  background: rgb(0, 139, 225);
-  color: white;
-  cursor: pointer;
-  outline: none;
+#infoIcon {
+  width: 16px;
+}
+
+#infoPanel {
+  border: 1px solid grey;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+#closeInfoBtn {
+  float: right;
 }
 
 .formItem {

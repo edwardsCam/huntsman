@@ -4,7 +4,7 @@ const inCurrentTab = callback => {
   })
 }
 
-const triggerSearch = e => {
+const triggerSearch = () => {
   const searchQuery = document.getElementById('searchInput').value
   chrome.storage.local.set({ huntsmanSearchQuery: searchQuery })
 
@@ -13,7 +13,7 @@ const triggerSearch = e => {
   })
 }
 
-const triggerClear = e => {
+const triggerClear = () => {
   chrome.storage.local.set({ huntsmanSearchQuery: null })
   const searchInput = document.getElementById('searchInput')
   searchInput.value = ''
@@ -24,8 +24,25 @@ const triggerClear = e => {
   })
 }
 
+const showInfo = () => {
+  if (!document.getElementById('infoPanel')) {
+    const infoPanel = document.createElement('div')
+    infoPanel.setAttribute('id', 'infoPanel')
+    infoPanel.innerHTML = 'TODO: help and info'
+
+    const closeBtn = document.createElement('button')
+    closeBtn.setAttribute('id', 'closeInfoBtn')
+    closeBtn.innerHTML = 'x'
+    closeBtn.onclick = () => infoPanel.remove()
+
+    infoPanel.appendChild(closeBtn)
+    document.body.appendChild(infoPanel)
+  }
+}
+
 document.getElementById('searchBtn').onclick = triggerSearch
 document.getElementById('clearBtn').onclick = triggerClear
+document.getElementById('infoBtn').onclick = showInfo
 document.getElementById('searchInput').onkeyup = e => {
   if (e.key === 'Enter') triggerSearch(e)
 }
