@@ -1,4 +1,4 @@
-document.getElementById('searchBtn').onclick = e => {
+const clickHandler = e => {
   const value = document.getElementById('searchInput').value.replace(/\"/g, '\\"')
 
   chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
@@ -8,4 +8,11 @@ document.getElementById('searchBtn').onclick = e => {
       chrome.tabs.executeScript(id, { file: 'src/scripts/searchForElements.js' })
     })
   })
+}
+
+document.getElementById('searchBtn').onclick = clickHandler
+document.getElementById('searchInput').onkeyup = e => {
+  if (e.key === 'Enter') {
+    clickHandler(e)
+  }
 }
