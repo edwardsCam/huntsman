@@ -1,35 +1,44 @@
+let searchResults = []
+let id = 0
+
 const searchAndHighlight = fullQuery => {
   clear()
   const sanitizedQuery = sanitize(fullQuery)
   if (sanitizedQuery) {
     const terms = sanitizedQuery.split(',').map(str => str.trim())
+    searchResults = []
+    id = 0
     terms.forEach(query => {
       document.querySelectorAll(query).forEach(element => {
-        drawOutline(element, query, 'green', 'rgba(0, 255, 255, 0.7)')
+        drawOutline(element, query)
       })
     })
+
+    chrome.runtime.sendMessage(searchResults.map(({ id, textContent }) => ({ id, textContent })))
   }
 }
 
-const clear = () => document.querySelectorAll('[huntsman-target]').forEach(el => el.remove())
-
-const drawOutline = (element, query, color, hoverColor) => {
-  const outline = createOutline(element.getBoundingClientRect(), color)
-  const outlineLabel = createOutlineLabel(query, color)
+const drawOutline = (element, query) => {
+  const outline = createOutline(element.getBoundingClientRect())
+  const outlineLabel = createOutlineLabel(query)
+  const info = {
+    id: id++,
+    element,
+    textContent: getTitle(element),
+    outline,
+    outlineLabel,
+  }
+  searchResults.push(info)
   outline.appendChild(outlineLabel)
   document.body.appendChild(outline)
 
-  outline.onmouseover = () => {
-    outline.style.borderColor = hoverColor
-    outlineLabel.style.background = hoverColor
-  }
-  outline.onmouseout = () => {
-    outline.style.borderColor = color
-    outlineLabel.style.background = color
-  }
+  outline.onmouseover = () => hover(info)
+  outline.onmouseout = () => unhover(info)
 }
 
-const createOutline = (rect, color) => {
+const getTitle = element => element.textContent || element.getAttribute('aria-label') || element.id || element.getAttribute('class') || element.getAttribute('data-qa')
+
+const createOutline = rect => {
   const el = document.createElement('div')
   el.setAttribute('huntsman-target', '')
   el.style.position = 'absolute'
@@ -37,7 +46,7 @@ const createOutline = (rect, color) => {
   el.style.left = `${rect.left}px`
   el.style.width = `${rect.width}px`
   el.style.height = `${rect.height}px`
-  el.style.border = `2px solid ${color}`
+  el.style.border = `2px solid green`
   el.style.overflow = 'hidden'
   el.style.background = 'none'
   el.style.zIndex = 999
@@ -45,12 +54,12 @@ const createOutline = (rect, color) => {
   return el
 }
 
-const createOutlineLabel = (label, color) => {
+const createOutlineLabel = label => {
   const el = document.createElement('div')
   el.innerHTML = label
   el.style.position = 'absolute'
   el.style.left = 0
-  el.style.background = color
+  el.style.background = 'green'
   el.style.fontSize = '10px'
   el.style.fontFamily = 'monospace'
   el.style.padding = '0 2px 3px 0'
@@ -66,10 +75,32 @@ const sanitize = unsafeStr => unsafeStr
 //   .replace(/</g, '&lt;')
 //   .replace(/>/g, '&gt;')
 
-chrome.runtime.onMessage.addListener((request, sender) => {
-  if (request.searchQuery) {
-    searchAndHighlight(request.searchQuery)
-  } else if (request.clear) {
+const clear = () => document.querySelectorAll('[huntsman-target]').forEach(el => el.remove())
+
+const hover = ({ outline, outlineLabel }) => {
+  const color = 'rgba(0, 255, 255, 0.7)'
+  outline.style.borderColor = color
+  outlineLabel.style.background = color
+}
+
+const unhover = ({ outline, outlineLabel }) => {
+  const color = 'green'
+  outline.style.borderColor = color
+  outlineLabel.style.background = color
+}
+
+const unhoverAll = () => searchResults.forEach(unhover)
+
+chrome.runtime.onMessage.addListener((msg, sender) => {
+  if (msg.searchQuery) {
+    searchAndHighlight(msg.searchQuery)
+  } else if (msg.clear) {
     clear()
+  } else if (msg.hoveredElementId != null) {
+    hover(
+      searchResults.find(({ id }) => id === msg.hoveredElementId)
+    )
+  } else if (msg.hoveredElementId === null) {
+    unhoverAll()
   }
 })
