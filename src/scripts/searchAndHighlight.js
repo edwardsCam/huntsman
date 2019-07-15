@@ -5,7 +5,7 @@ const searchAndHighlight = (fullQuery, redrawList = true) => {
   clear()
   const sanitizedQuery = sanitize(fullQuery)
   if (sanitizedQuery) {
-    const terms = sanitizedQuery.split(',').map(str => str.trim())
+    const terms = sanitizedQuery.split(',').map(str => str.trim()).filter(str => !!str)
     searchResults = []
     id = 0
     terms.forEach(query => {
