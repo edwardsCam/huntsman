@@ -71,3 +71,7 @@ button:focus {
   justify-content: space-between;
   padding: 0 24px 0 108px;
 }
+
+#resultsCount {
+  display: inline-block;
+}

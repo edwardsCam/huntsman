@@ -38,39 +38,55 @@ const showInfo = () => {
 
 const populateList = results => {
   if (results.length) {
-    const list = document.createElement('div')
-    list.setAttribute('id', 'resultsList')
-    list.style.marginTop = '12px'
-    list.style.maxHeight = '443px'
-    list.style.overflow = 'auto'
-    results.forEach(({ id, textContent }) => {
-      const div = document.createElement('div')
-      div.style.border = '2px solid red'
-      div.style.borderRadius = '3px'
-      div.style.height = '15px'
-      div.style.margin = '10px auto'
-      div.style.overflow = 'hidden'
-      div.style.width = '300px'
-      div.style.transition = 'width 400ms ease-in-out'
-      div.innerHTML = textContent
-      div.title = textContent
-      div.onmouseover = () => {
-        sendMessageInCurrentTab({ hoveredElementId: id })
-        div.style.width = '457px'
-      }
-      div.onmouseout = () => {
-        sendMessageInCurrentTab({ hoveredElementId: null })
-        div.style.width = '300px'
-      }
-      list.appendChild(div)
-    })
-    document.body.appendChild(list)
+    document.body.appendChild(createList(results))
   }
+  setResultsCount(results.length)
+}
+
+const createList = results => {
+  const list = document.createElement('div')
+  list.setAttribute('id', 'resultsList')
+  list.style.marginTop = '12px'
+  list.style.maxHeight = '443px'
+  list.style.overflow = 'auto'
+  results.forEach(({ id, textContent }) => {
+    const div = document.createElement('div')
+    div.style.border = '2px solid red'
+    div.style.borderRadius = '3px'
+    div.style.height = '15px'
+    div.style.margin = '10px auto'
+    div.style.overflow = 'hidden'
+    div.style.width = '300px'
+    div.style.transition = 'width 400ms ease-in-out'
+    div.innerHTML = textContent
+    div.title = textContent
+    div.onmouseover = () => {
+      sendMessageInCurrentTab({ hoveredElementId: id })
+      div.style.width = '457px'
+    }
+    div.onmouseout = () => {
+      sendMessageInCurrentTab({ hoveredElementId: null })
+      div.style.width = '300px'
+    }
+    list.appendChild(div)
+  })
+  return list
+}
+
+const setResultsCount = n => {
+  let text = ''
+  if (n === 1) {
+    text = '1 result found'
+  } else if (n > 1) {
+    text = `${n} results found`
+  }
+  document.querySelector('#resultsCount').innerHTML = text
 }
 
 const clearList = () => {
   const list = document.getElementById('resultsList')
   if (list) list.remove()
+  setResultsCount(0)
 }
 
 document.getElementById('searchBtn').onclick = triggerSearch

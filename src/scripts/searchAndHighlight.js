@@ -49,7 +49,7 @@ const createOutline = rect => {
   el.style.border = `2px solid green`
   el.style.overflow = 'hidden'
   el.style.background = 'none'
-  el.style.zIndex = 999
+  el.style.zIndex = 9999
   el.style.transition = 'border-color 100ms'
   return el
 }
@@ -64,6 +64,7 @@ const createOutlineLabel = label => {
   el.style.fontFamily = 'monospace'
   el.style.padding = '0 2px 3px 0'
   el.style.transition = 'background 100ms'
+  el.style.color = 'black'
   return el
 }
 
