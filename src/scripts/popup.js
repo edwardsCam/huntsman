@@ -74,17 +74,28 @@ const addListeners = (element, hoveredElementId) => {
 }
 
 const setResultsCount = n => {
+  const label = document.querySelector('#resultsCount')
+  let color = 'black'
   let text = ''
   if (n !== null) {
     if (n === 1) {
       text = '1 result found'
+      color = 'green'
     } else if (n > 1) {
       text = `${n} results found`
+      color = 'green'
     } else {
       text = 'No results!'
     }
   }
-  document.querySelector('#resultsCount').innerHTML = text
+  label.style.color = color
+  label.innerHTML = text
+}
+
+const setErrorMsg = msg => {
+  const label = document.querySelector('#resultsCount')
+  label.innerHTML = msg
+  label.style.color = 'red'
 }
 
 const clearList = () => {
@@ -109,4 +120,10 @@ window.onload = () => {
   })
 }
 
-chrome.runtime.onMessage.addListener(populateList)
+chrome.runtime.onMessage.addListener(msg => {
+  if (msg.error) {
+    setErrorMsg(msg.error)
+  } else {
+    populateList(msg.results)
+  }
+})

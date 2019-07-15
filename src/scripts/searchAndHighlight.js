@@ -1,17 +1,20 @@
 let searchResults = []
 let id = 0
 
-const searchAndHighlight = (fullQuery, redrawList = true) => {
+const searchAndHighlight = fullQuery => {
   clear()
   const sanitizedQuery = sanitize(fullQuery)
-  if (sanitizedQuery) {
-    const terms = sanitizedQuery.split(',').map(str => str.trim()).filter(str => !!str)
-    searchResults = []
-    id = 0
-    terms.forEach(query => {
-      const isAttrSearch = query[0] === '['
+  if (!sanitizedQuery) return
+
+  const terms = sanitizedQuery.split(',').map(str => str.trim()).filter(str => !!str)
+  searchResults = []
+  id = 0
+
+  const errors = []
+  terms.forEach(query => {
+    try {
       document.querySelectorAll(query).forEach(element => {
-        if (isAttrSearch) {
+        if (query[0] === '[') {
           const attr = query.split('[')[1].split('=')[0]
           const attrValue = element.getAttribute(attr)
           drawOutline(element, attrValue ? `[${attr}=${attrValue}]` : `[${attr}]`)
@@ -19,11 +22,22 @@ const searchAndHighlight = (fullQuery, redrawList = true) => {
           drawOutline(element, query)
         }
       })
-    })
-
-    if (redrawList) {
-      chrome.runtime.sendMessage(searchResults.map(({ id, textContent }) => ({ id, textContent })))
+    } catch (e) {
+      if (e.message.includes(`'${query}' is not a valid selector`)) {
+        errors.push(query)
+      } else throw e
     }
+  })
+
+  chrome.runtime.sendMessage({
+    results: searchResults.map(({ id, textContent }) => ({ id, textContent }))
+  })
+  if (errors.length) {
+    chrome.runtime.sendMessage({
+      error: errors.length === 1 ?
+        `${errors[0]} is not a valid selector` :
+        errors.join(', ') + ' are not valid selectors'
+    })
   }
 }
 
