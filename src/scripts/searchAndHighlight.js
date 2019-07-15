@@ -9,8 +9,15 @@ const searchAndHighlight = (fullQuery, redrawList = true) => {
     searchResults = []
     id = 0
     terms.forEach(query => {
+      const isAttrSearch = query[0] === '['
       document.querySelectorAll(query).forEach(element => {
-        drawOutline(element, query)
+        if (isAttrSearch) {
+          const attr = query.split('[')[1].split('=')[0]
+          const attrValue = element.getAttribute(attr)
+          drawOutline(element, attrValue ? `[${attr}=${attrValue}]` : `[${attr}]`)
+        } else {
+          drawOutline(element, query)
+        }
       })
     })
 
