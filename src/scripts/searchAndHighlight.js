@@ -1,7 +1,7 @@
 let searchResults = []
 let id = 0
 
-const searchAndHighlight = fullQuery => {
+const searchAndHighlight = (fullQuery, redrawList = true) => {
   clear()
   const sanitizedQuery = sanitize(fullQuery)
   if (sanitizedQuery) {
@@ -14,7 +14,9 @@ const searchAndHighlight = fullQuery => {
       })
     })
 
-    chrome.runtime.sendMessage(searchResults.map(({ id, textContent }) => ({ id, textContent })))
+    if (redrawList) {
+      chrome.runtime.sendMessage(searchResults.map(({ id, textContent }) => ({ id, textContent })))
+    }
   }
 }
 
@@ -92,16 +94,20 @@ const unhover = ({ outline, outlineLabel }) => {
 
 const unhoverAll = () => searchResults.forEach(unhover)
 
+const getResult = _id_ => searchResults.find(({ id }) => id === _id_)
+
 chrome.runtime.onMessage.addListener((msg, sender) => {
   if (msg.searchQuery) {
     searchAndHighlight(msg.searchQuery)
   } else if (msg.clear) {
     clear()
   } else if (msg.hoveredElementId != null) {
-    hover(
-      searchResults.find(({ id }) => id === msg.hoveredElementId)
-    )
+    hover(getResult(msg.hoveredElementId))
   } else if (msg.hoveredElementId === null) {
     unhoverAll()
+  } else if (msg.elementToScrollIntoView !== null) {
+    getResult(msg.elementToScrollIntoView).element.scrollIntoView({
+      behavior: 'smooth'
+    })
   }
 })

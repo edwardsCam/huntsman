@@ -58,19 +58,30 @@ const createList = results => {
     div.style.overflow = 'hidden'
     div.style.width = '300px'
     div.style.transition = 'width 400ms ease-in-out'
+    div.style.cursor = 'pointer'
     div.innerHTML = textContent
     div.title = textContent
-    div.onmouseover = () => {
-      sendMessageInCurrentTab({ hoveredElementId: id })
-      div.style.width = '457px'
-    }
-    div.onmouseout = () => {
-      sendMessageInCurrentTab({ hoveredElementId: null })
-      div.style.width = '300px'
-    }
     list.appendChild(div)
+
+    addListeners(div, id)
   })
   return list
+}
+
+const addListeners = (element, hoveredElementId) => {
+  element.onmouseover = () => {
+    sendMessageInCurrentTab({ hoveredElementId })
+    element.style.width = '457px'
+  }
+
+  element.onmouseout = () => {
+    sendMessageInCurrentTab({ hoveredElementId: null })
+    element.style.width = '300px'
+  }
+
+  element.ondblclick = () => {
+    sendMessageInCurrentTab({ elementToScrollIntoView: hoveredElementId })
+  }
 }
 
 const setResultsCount = n => {
