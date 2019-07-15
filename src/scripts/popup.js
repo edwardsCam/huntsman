@@ -86,10 +86,14 @@ const addListeners = (element, hoveredElementId) => {
 
 const setResultsCount = n => {
   let text = ''
-  if (n === 1) {
-    text = '1 result found'
-  } else if (n > 1) {
-    text = `${n} results found`
+  if (n !== null) {
+    if (n === 1) {
+      text = '1 result found'
+    } else if (n > 1) {
+      text = `${n} results found`
+    } else {
+      text = 'No results!'
+    }
   }
   document.querySelector('#resultsCount').innerHTML = text
 }
@@ -97,7 +101,7 @@ const setResultsCount = n => {
 const clearList = () => {
   const list = document.getElementById('resultsList')
   if (list) list.remove()
-  setResultsCount(0)
+  setResultsCount(null)
 }
 
 document.getElementById('searchBtn').onclick = triggerSearch
