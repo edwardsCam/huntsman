@@ -112,7 +112,7 @@ chrome.runtime.onMessage.addListener((msg, sender) => {
     hover(getResult(msg.hoveredElementId))
   } else if (msg.hoveredElementId === null) {
     unhoverAll()
-  } else if (msg.elementToScrollIntoView !== null) {
+  } else if (msg.elementToScrollIntoView != null) {
     getResult(msg.elementToScrollIntoView).element.scrollIntoView({
       behavior: 'smooth'
     })
