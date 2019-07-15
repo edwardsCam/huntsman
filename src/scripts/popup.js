@@ -46,19 +46,8 @@ const populateList = results => {
 const createList = results => {
   const list = document.createElement('div')
   list.setAttribute('id', 'resultsList')
-  list.style.marginTop = '12px'
-  list.style.maxHeight = '443px'
-  list.style.overflow = 'auto'
   results.forEach(({ id, textContent }) => {
     const div = document.createElement('div')
-    div.style.border = '2px solid red'
-    div.style.borderRadius = '3px'
-    div.style.height = '15px'
-    div.style.margin = '10px auto'
-    div.style.overflow = 'hidden'
-    div.style.width = '300px'
-    div.style.transition = 'width 400ms ease-in-out'
-    div.style.cursor = 'pointer'
     div.innerHTML = textContent
     div.title = textContent
     list.appendChild(div)

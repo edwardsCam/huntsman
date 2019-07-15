@@ -75,3 +75,20 @@ button:focus {
 #resultsCount {
   display: inline-block;
 }
+
+#resultsList {
+  margin-top: 12px;
+  max-height: 443px;
+  overflow: auto;
+}
+
+#resultsList > div {
+  border-radius: 3px;
+  border: 2px solid red;
+  cursor: pointer;
+  height: 15px;
+  margin: 10px auto;
+  overflow: hidden;
+  transition: width 400ms ease-in-out;
+  width: 300px;
+}
